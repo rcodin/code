@@ -8,6 +8,7 @@ class ll {
 private:
 	dll_node *head;
 	dll_node *mid;
+	dll_node *back;
 	int size;
 public:
 	ll() {
@@ -24,9 +25,33 @@ public:
 		node->next = NULL;
 	}
 
-	int get_mid()
+	int pop_mid()
 	{
-		return mid->val;
+		int val = -1;
+
+		if (size == 0)
+			return -1;
+		val = mid->val;
+		dll_node *temp = mid;
+		if (size == 1 || size == 2) {
+			head = head->next;
+			head->priv = NULL;
+			mid = head;
+			back = head;
+		}
+		else if (size % 2 == 0) {
+			mid = mid->next;
+			mid->priv = temp->priv;
+			(mid->priv)->next = mid;
+		}
+		else {
+			mid = mid->priv;
+			mid->next = mid->next;
+			(mid->next)->priv = mid;
+		}
+		delete temp;
+		size--;
+		return val;
 	}
 
 	void put_mid(int val)
@@ -43,26 +68,64 @@ public:
 				head = new_node;
 				mid = new_node;
 				mid->next = temp;
-				temp->prev = head;
 			}
-			if (size % 2 == 0) {
-				temp->prev = ;
+			else if (size % 2 == 0) {
 				mid = new_node;
-				
+				mid->prev = temp;
+				mid->next = temp->next;
+				temp->next = new_node;
+			}
+			else {
+				mid = new_node;
+				mid->next = temp;
+				mid->priv = temp->priv;
+				temp->priv = new_node;
 			}
 		}
 		size++;
 	}
 
-	int get_back()
+	int pop_back()
 	{
+		
+		int val = -1;
+		dll_node *temp = back;
+		if (size == 0) {
+			return val;
+		}
+		val = back->val;
+		else if (size == 1) {
+			head = NULL;
+			back = NULL;
+			mid = NULL;
+		}
+		else if (size % 2 == 0) {
+			back = back->priv;
+			back->next = NULL;	
+		}
+		else {
+			back = back->priv;
+			back->next = NULL;
+			mid = mid->next;
+		}
+		size--;
 	}
 
-	void put_back()
+	void put_back(int val)
 	{
+		dll_node *new_node = create_node(val);
+		if (size == 0) {
+			head = new_node;
+			mid = new_node;
+			back = new_node;
+		}
+		else if (size % 2 == 0) {
+			mid = mid->next;
+
+		}
 	}
 
-	int get_front()
+	int pop_front()
 	{
 	}
 
