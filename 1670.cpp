@@ -121,7 +121,7 @@ public:
 		}
 		else if (size % 2 == 0) {
 			mid = mid->next;
-
+			
 		}
 	}
 
